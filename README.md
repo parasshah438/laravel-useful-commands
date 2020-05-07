@@ -145,12 +145,12 @@
 <p> > php artisan ui --help </p>
 <p>php artisan ui vue</p>
 <p>php artisan ui react</p>
-<p>php artisan ui boostrap</p>
+<p>php artisan ui bootstrap</p>
 
 <p> > auth </p>
 <p>php artisan ui vue --auth </p>
 <p>php artisan ui react --auth</p>
-<p>php artisan ui boostrap --auth</p>
+<p>php artisan ui bootstrap --auth</p>
 
 <p>> node</p>
 <p>npm install</p>
