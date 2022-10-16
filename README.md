@@ -125,20 +125,40 @@
 	php artisan make:observer PostObserver --model=Post    
 </pre> 
 
-<h4>20: rule                   </h4>
+<h4>20: rule</h4>
 <pre> 
 	php artisan make:rule Uppercase 
 </pre> 
 
-<h4>21: resource                    </h4>
+<h4>21: resource</h4>
 <pre> 
 	php artisan make:resource PostResource
 	php artisan make:resource PostResource --collection=Post  
 </pre> 
 
+<h4>22: Application overview</h4>
+<pre> 
+	php artisan about
+	php artisan about --only=environment 
+</pre>
 
-<h1>Laravel 6 Make Auth (Artisan Command)</h1>
-<p>laravel new my-app</p>
+<h4>23: Application maintenance mode</h4>
+<pre> 
+	php artisan down
+	php artisan down --retry=60 (seconds)
+	php artisan down --render="maintenance" (page)
+	php artisan down --redirect=/
+	php artisan down --secret="myapp"
+	php artisan up
+</pre>
+
+<h1>Laravel Old Authentication (Artisan Command)</h1>
+<p>composer create-project laravel/laravel my-app</p>
+<p>php artisan make:auth</p>
+<br>
+
+<h1>Laravel New Authentication (Artisan Command)</h1>
+<p>composer create-project laravel/laravel my-app</p>
 <p>composer require laravel/ui</p> 
 <p>composer require laravel/ui --dev</p>
 
@@ -155,6 +175,9 @@
 <p>> node</p>
 <p>npm install</p>
 <p>npm run dev</p>
-<p>npm run watch </p>
+<p>Compiling Assets (Mix)</p>
+<p>npm run watch</p><br>
+<p>Asset Bundling (Vite)</p>
+<p>npm run build</p>
 </body>
 </html>
