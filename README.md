@@ -152,6 +152,24 @@
 	php artisan up
 </pre>
 
+<h4>24: Publish the lang Folder in Laravel 11</h4>
+<pre> 
+	php artisan lang:publish
+	php artisan lang:publish --existing
+</pre>
+
+<h4>25: Publish Config Files in Laravel 11</h4>
+<pre> 
+	php artisan config:publish
+	php artisan config:publish --all
+</pre>
+
+<h4>26: publish the various route files in Laravel 11</h4>
+<pre> 
+	php artisan install:api
+	php artisan install:broadcasting
+</pre>
+
 <h1>Laravel Old Authentication (Artisan Command)</h1>
 <p>composer create-project laravel/laravel my-app</p>
 <p>php artisan make:auth</p>
