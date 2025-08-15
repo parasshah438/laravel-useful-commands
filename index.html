@@ -1,684 +1,1417 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel Useful Commands - Complete Reference Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-toggle {
+            display: none;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: #2c3e50;
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            transform: translateX(-280px);
+            transition: transform 0.3s ease;
+            padding-top: 80px;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            border-bottom: 1px solid #34495e;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .sidebar a:hover {
+            background: #34495e;
+            padding-left: 30px;
+        }
+
+        .sidebar a.active {
+            background: #ff6b6b;
+            border-left: 4px solid #ee5a24;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 0;
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: 280px;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #ff6b6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+            padding-left: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #2d3748 !important;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        .inline-code {
+            background: #f1f5f9;
+            color: #e53e3e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h4 {
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 2rem;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge.new { background: #4ecdc4; }
+        .badge.advanced { background: #feca57; color: #333; }
+        .badge.important { background: #ff7675; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #ff6b6b;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert.info {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+
+        .alert.warning {
+            background: #fff3e0;
+            border-color: #ff9800;
+            color: #ef6c00;
+        }
+
+        .alert.success {
+            background: #e8f5e8;
+            border-color: #4CAF50;
+            color: #2e7d32;
+        }
+
+        .alert.danger {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        /* Progress Bar */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 107, 107, 0.3);
+            z-index: 1002;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #ff6b6b;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #ff6b6b;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #ee5a24;
+            transform: translateY(-2px);
+        }
+
+        /* Search */
+        .search-container {
+            padding: 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: #ff6b6b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            pre {
+                font-size: 0.8rem;
+                overflow-x: auto;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        /* Syntax highlighting improvements */
+        pre[class*="language-"] {
+            background: #1a202c !important;
+            color: #e2e8f0;
+        }
+
+        .token.comment { color: #718096; }
+        .token.string { color: #68d391; }
+        .token.number { color: #fbb6ce; }
+        .token.keyword { color: #63b3ed; }
+        .token.function { color: #f6e05e; }
+        .token.operator { color: #ed8936; }
+    </style>
 </head>
 <body>
-<h1>Laravel useful Commands</h1>
-
-<h4>Route list</h4>
-<pre>
-	php artisan route:list
-	
-	Hide routes defined by third-party packages
-	php artisan route:list --except-vendor
-</pre>
-
-<h4>Router HTTP Methods</h4>
-<pre>
-	Route::get($uri, $callback);
-	Route::post($uri, $callback);
-	Route::put($uri, $callback);
-	Route::patch($uri, $callback);
-	Route::delete($uri, $callback);
-	Route::options($uri, $callback);	
-
-
-	Multiple HTTP methods
-	Route::methods(['GET', 'POST'], $uri, $callback);
-
-	All HTTP methods
-	Route::match(['GET', 'POST'], $uri, $callback);
-
-	All HTTP methods
-	Route::any($uri, $callback);
-
-	All HTTP methods
-	Route::allMethods($uri, $callback);
-</pre>
-
-<h4>Route Optional Parameters</h4>
-<pre>
-	Route::get('/user/{name?}', function ($name = null) {
-		return $name;
-	});
-	
-	Route::get('/user/{name?}', function ($name = 'John') {
-		return $name;
-	});
-</pre>
-
-<h4>Regular Expression Constraints</h4>
-<pre>
-	Route::get('/user/{name}', function ($name) {
-		//
-	})->where('name', '[A-Za-z]+');
-	
-	Route::get('/user/{id}', function ($id) {
-		//
-	})->where('id', '[0-9]+');
-	
-	Route::get('/user/{id}/{name}', function ($id, $name) {
-		//
-	})->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
-	
-	Route::get('/user/{id}/{name}', function ($id, $name) {
-		//
-	})->whereInteger('id');
-	
-	Route::get('/user/{id}/{name}', function ($id, $name) {
-		//
-	})->whereAlpha('name');
-</pre>
-
-<h4>Accessing current route</h4>
-<pre>
-	$route = Route::current();
-	$route = Route::currentRouteName();
-	$route = Route::currentRouteAction();
-</pre>
-
-<h4>Redirect Routes</h4>
-<pre>
-
-	Route::redirect('/here', '/there');
-	Route::redirect('/here', '/there', 301);
-	Route::redirect('/here', '/there', 301, ['id' => 123]);
-	Route::permanentRedirect('/here', '/there');
-
-	php artisan route:list --redirect
-	php artisan route:list --redirect --except-vendor
-	php artisan route:list --redirect --only-vendor
-	php artisan route:list --redirect --except-vendor --only-vendor
-	php artisan route:list --redirect --only-vendor --except-vendor
-
-	php artisan route:list --redirect --only=home
-	php artisan route:list --redirect --except=home
-	php artisan route:list --redirect --only=home --except=home
-
-</pre>
-<h4>Controller</h4>
-<pre> 
-	  php artisan make:controller UserController
-	  php artisan make:controller UserController --model
-	  php artisan make:controller UserController --model=User --resource
-	  php artisan make:controller UserController --model=User --api
-	  php artisan make:controller UserController --model=User --invokable
-	  php artisan make:controller UserController --model=User --resource --api
-	  php artisan make:controller UserController --model=User --resource --api --invokable
-	  php artisan make:controller UserController --model=User --api --invokable
-	  php artisan make:controller UserController --model=User --api --invokable --resource
-	  php artisan make:controller UserController --model=User --api --invokable --resource --force
-	  php artisan make:controller UserController --model=User --api --invokable --force
-	  php artisan make:controller UserController --model=User --api --invokable --force --resource
-	  php artisan make:controller UserController --resource  
-	  php artisan make:controller UserController --api  
-	  php artisan make:controller UserController --invokable 
-	  php artisan make:controller UserController --model=Photo 
-</pre> 
-
-<h4>Model </h4>
-<pre> 
-	php artisan make:model Photo
-	php artisan make:model Photo --migration --controller --resource 
-	php artisan make:model Photo -crm
-	php artisan make:model Photo --force
-	php artisan make:model Photo --table=photos
-	php artisan make:model Photo --table=photos --force
-	php artisan make:model Photo --table=photos --connection=mysql
-	php artisan make:model Photo --table=photos --connection=mysql --force
-	php artisan make:model Photo --table=photos --connection=mysql --migration --force
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete --timestamp
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete --timestamp --with-comments
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete --timestamp --with-comments --with-pivot
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete --timestamp --with-comments --with-pivot --softdelete
-	php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force --preserve --softdelete --timestamp --with-comments --with-pivot --softdelete --timestamp
-</pre> 
-
-<h4>Models - Mass assignment</h4>
-<pre>
-	protected $guarded = []; // Empty means all attributes are guarded
-
-	protected $fillable = ['name', 'email'];
-
-	protected $hidden = ['password', 'remember_token'];
-
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-	];
-
-	protected $dates = ['deleted_at'];
-
-	protected $with = ['posts'];
-
-	protected $withCount = ['posts'];
-
-	protected $appends = ['full_name'];
-</pre>
-
-<h4>Migration  </h4>
-<pre> 
-	Run the new migrations
-	php artisan migrate	
-
-	Rollback latest migration
-	php artisan migrate:rollback
-
-	Rollback all migrations
-	php artisan migrate:reset
-
-	Rollback all and re-migrate
-	php artisan migrate:refresh
-
-	Rollback all, re-migrate and run all seeders
-	php artisan migrate:refresh --seed
-
-	Create a migration
-	php artisan make:migration create_users_table
-
-	Create a migration with specified table
-	php artisan make:migration create_users_table --table=users
-
-	Create a migration with specified columns
-	php artisan make:migration create_users_table --table=users --columns="name:string(255),email:string(255),password:string(255)"
-	php artisan make:migration create_users_table --table=users --columns="name:string(255),email:string(255),password:string(255)" --create=users
-</pre> 
-
-
-<h4>Models - CRUD Operations</h4>
-<pre>
-	Create
-	$newUser = User::create(['name' => 'John Doe', 'email' => 'john@example.com']);
-
-	Update
-	$user = User::find(1);
-	$user->update(['name' => 'Updated Name']);
-	User::where('status', 'inactive')->update(['status' => 'active']);
-
-	Read
-	$users = User::all();
-	$user = User::find(1);
-	$activeUsers = User::where('status', 'active')->get();
-	$tags = Product::where('name', 'Some Product')->first()->tags;
-
-	Delete
-	$user = User::find(1);
-	$user->delete();
-	User::where('status', 'inactive')->delete();
-</pre>
-<h4>Seeder   </h4>
-<pre> 
-	php artisan make:seeder BooksTableSeeder
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --force
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --database=mysql
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --database=mysql --force
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --database=mysql --force --class=BooksTableSeeder
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --database=mysql --force --class=BooksTableSeeder --force
-	php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder --database=mysql --force --class=BooksTableSeeder --force --class=BooksTableSeeder
-
-	php artisan db:seed
-	php artisan db:seed --class=BooksTableSeeder
-	php artisan db:seed --class=BooksTableSeeder --force
-	php artisan db:seed --class=BooksTableSeeder --database=mysql
-	php artisan db:seed --class=BooksTableSeeder --database=mysql --force
-	php artisan db:seed --class=BooksTableSeeder --database=mysql --force --class=BooksTableSeeder
-
-</pre> 
-
-<h4>Request    </h4>
-<pre> 
-	php artisan make:request StoreBlogPost  
-</pre> 
-
-<h4>Middleware     </h4>
-<pre> 
-	php artisan make:middleware IsAdmin   
-</pre> 
-
-<h4>Policy      </h4>
-<pre> 
-	php artisan make:policy PostPolicy
-	php artisan make:policy PostPolicy --model=Photo     
-</pre> 
-
-<h4>Command       </h4>
-<pre> 
-	php artisan make:command SendEmails 
-	php artisan make:command SendEmails --command=Command      
-</pre> 
-
-<h4>Event        </h4>
-<pre> 
-	php artisan make:event OrderShipped     
-</pre> 
-
-<h4>Job         </h4>
-<pre> 
-	php artisan make:job SendReminderEmail    
-	php artisan make:job SendReminderEmail --sync 
-</pre> 
-
-<h4>Listener          </h4>
-<pre> 
-	php artisan make:listener SendShipmentNotification     
-	php artisan make:listener SendShipmentNotification --event=Event 
-	php artisan make:listener SendShipmentNotification --queued 
-</pre> 
-
-
-<h4>Mail           </h4>
-<pre> 
-	php artisan make:mail OrderShipped     
-	php artisan make:mail OrderShipped --markdown  
-	php artisan make:mail OrderShipped --force 
-</pre> 
-
-<h4>Notification            </h4>
-<pre> 
-	php artisan make:notification InvoicePaid      
-	php artisan make:notification InvoicePaid --markdown  
-	php artisan make:notification InvoicePaid --force 
-</pre> 
-
-<h4>Provider             </h4>
-<pre> 
-	php artisan make:provider DuskServiceProvider  
-</pre>
-
-<h4>Test              </h4>
-<pre> 
-	php artisan make:test UserTest
-	php artisan make:test UserTest --unit    
-</pre> 
-
-<h4>Channel               </h4>
-<pre> 
-	php artisan make:channel OrderChannel  
-</pre> 
-
-<h4>Exception                </h4>
-<pre> 
-	php artisan make:exception UserNotFoundException
-	php artisan make:exception UserNotFoundException --render
-	php artisan make:exception UserNotFoundException --report     
-</pre> 
-
-<h4>Factory                 </h4>
-<pre> 
-	php artisan make:factory PostFactory 
-	php artisan make:factory PostFactory --model=Post     
-</pre> 
-
-<h4>Observer                  </h4>
-<pre> 
-	php artisan make:observer PostObserver  
-	php artisan make:observer PostObserver --model=Post    
-</pre> 
-
-<h4>Rule</h4>
-<pre> 
-	php artisan make:rule Uppercase 
-</pre> 
-
-<h4>Resource</h4>
-<pre> 
-	php artisan make:resource PostResource
-	php artisan make:resource PostResource --collection=Post  
-</pre> 
-
-<h4>Application overview</h4>
-<pre> 
-	php artisan about
-	php artisan about --only=environment 
-</pre>
-
-<h4>Application maintenance mode</h4>
-<pre> 
-	php artisan down
-	php artisan down --retry=60 (seconds)
-	php artisan down --render="maintenance" (page)
-	php artisan down --redirect=/
-	php artisan down --secret="myapp"
-	php artisan up
-</pre>
-
-
-<h4>HTTP Client</h4>
-<pre>
-	http Client
-	php artisan http client
-	php artisan http client --name=laravel
-	php artisan http client --url=https://laravel.com
-	php artisan http client --url=https://laravel.com --name=laravel
-
-	$response = Http::get('https://api.quotable.io/random');
-
-	$result = $response->json();
-	$result = $response->object();
-	$result = $response->collect();
-	$result = $response->array();
-	$result = $response->body();
-	$result = $response->dump();
-	$result = $response->download();
-	$result = $response->plain();
-	$result = $response->text();
-	$result = $response->throw();
-	$result = $response->status();
-	$result = $response->successful();
-	$result = $response->redirect();
-	$result = $response->retry();
-	$result = $response->retryAfter();
-	$result = $response->headers();
-	$result = $response->cookies();
-	$result = $response->baseResponse();
-	
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value']);
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->json();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->object();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->collect();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->array();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->body();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->dump();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->dump();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->download();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->plain();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->text();
-	$response = Http::get('https://api.quotable.io/random', ['param' => 'value'])->throw();
-
-</pre>
-
-<h4>Authentication</h4>
-<pre>
-	Authentication
-	php artisan make:auth
-	php artisan make:auth --provider
-	php artisan make:auth --provider --model=User
-	php artisan make:auth --provider --model=User --table=users
-	
-	$user = auth()->user();
-	$user = Auth::user();
-	$user = Auth::id();
-	$user = Auth::check();
-	$user = Auth::guest();
-	$user = Auth::user();
-
-	$name = auth()->user()->name;
-	$name = Auth::user()->name;
-	$name = Auth::id()->name;
-	$name = Auth::check()->name;
-	$name = Auth::guest()->name;
-
-	Only visible for guests and NOT for authenticated users (= not logged in)	
-	@guest
-	@endguest
-
-	Only visible for authenticated users and NOT for guests (= logged in)
-	@auth
-	@endauth	
-</pre>
-
-<h4>Carbon</h4>
-<pre>
-	Import Carbon
-	use Carbon\Carbon;
-
-	$now = Carbon::now();
-	$now = Carbon::now('Asia/Kolkata');
-	$now = Carbon::now('Europe/London');
-	$now = Carbon::now('America/New_York');
-	$now = Carbon::now('America/Chicago');
-	$now = Carbon::now('America/Denver');
-	$now = Carbon::now('America/Los_Angeles');
-	$now = Carbon::now('America/Sao_Paulo');
-	$now = Carbon::now('Asia/Tokyo');
-	$now = Carbon::now('Asia/Shanghai');
-	$now = Carbon::now('Australia/Sydney');
-	$now = Carbon::now('Pacific/Auckland');
-
-	Current date and time
-	$now = Carbon::now();
-	echo $now; // 2024-06-27 12:00:00
-
-	Specific date and time
-	$newYear = Carbon::create(2024, 1, 1, 0, 0, 0);
-	echo $newYear; // 2024-01-01 00:00:00
-
-	Parse a date string
-	$date = Carbon::parse('2024-06-27 12:00:00');
-	echo $date; // 2024-06-27 12:00:00
-
-	Create from timestamp
-	$timestamp = Carbon::createFromTimestamp(1622499200);
-	echo $timestamp; // 2021-06-01 12:00:00
-
-	Add time
-	echo $now->addDays(5); // 5 days from now
-	echo $now->addWeeks(2); // 2 weeks from now
-	echo $now->addMonths(3); // 3 months from now
-
-	Subtract time
-	echo $now->subDays(5); // 5 days ago
-	echo $now->subWeeks(2); // 2 weeks ago
-	echo $now->subMonths(3); // 3 months ago
-
-	Start and end of periods
-	echo $now->startOfDay(); // Start of today
-	echo $now->endOfDay(); // End of today
-	echo $now->startOfMonth(); // Start of the month
-	echo $now->endOfMonth(); // End of the month
-
-
-	Format date
-	echo $now->format('Y-m-d H:i:s'); // 2024-06-27 12:00:00
-	echo $now->toDateString(); // 2024-06-27
-	echo $now->toFormattedDateString(); // Jun 27, 2024
-	echo $now->toTimeString(); // 12:00:00
-	echo $now->toDateTimeString(); // 2024-06-27 12:00:00
-
-	Custom formats
-	echo $now->format('l jS \\of F Y h:i:s A'); // Wednesday 27th of June 2024 12:00:00 PM
-
-	$tomorrow = Carbon::tomorrow();
-	if ($now->lt($tomorrow)) {
-		echo 'Now is before tomorrow';
-	}
-	if ($now->gt($tomorrow)) {
-		echo 'Now is after tomorrow';
-	}
-	if ($now->eq($tomorrow)) {
-		echo 'Now is equal to tomorrow';
-	}
-	Checking if dates are the same day
-	$anotherDate = Carbon::create(2024, 6, 27, 15, 0, 0);
-	if ($now->isSameDay($anotherDate)) {
-		echo 'Same day';
-	}
-
-	Human-readable dates
-	echo $now->diffForHumans(); // 1 second ago
-	echo $now->addDays(5)->diffForHumans(); // 5 days from now
-	echo $now->subDays(5)->diffForHumans(); // 5 days ago
-
-	Carbon::setLocale('fr');
-	echo $now->diffForHumans(); // il y a 1 seconde
-
-	Carbon::setLocale('es');
-	echo $now->diffForHumans(); // hace 1 segundo
-
-	Carbon::setLocale('fr');
-	echo $now->diffForHumans(); // il y a 1 seconde
-
-	Carbon::setLocale('es');
-	echo $now->diffForHumans(); // hace 1 segundo
-
-	$now = Carbon::now('America/New_York');
-	echo $now; // Current time in New York
-
-	$now = Carbon::now('Asia/Tokyo');
-	echo $now; // Current time in Tokyo
-
-	Convert timezone
-	$nowInUtc = $now->setTimezone('UTC');
-	echo $nowInUtc; // Convert current time to UTC
-
-	$now = Carbon::now();
-	Modify dates
-	echo $now->addYears(1); // Add 1 year
-	echo $now->subYears(2); // Subtract 2 years
-	echo $now->addHours(3); // Add 3 hours
-	echo $now->subMinutes(30); // Subtract 30 minutes
-
-	To JSON
-	echo $now->toJson(); // "2024-06-27T12:00:00.000000Z"
-
-	From JSON
-	$dateFromJson = Carbon::parse(json_decode('"2024-06-27T12:00:00.000000Z"'));
-	echo $dateFromJson; // 2024-06-27 12:00:00
-
-	Get today's date
-	$today = Carbon::today();
-	echo $today; // 2024-06-27 00:00:00
-
-	Get yesterday's date
-	$yesterday = Carbon::yesterday();
-	echo $yesterday; // 2024-06-26 00:00:00
-
-	Get tomorrow's date
-	$tomorrow = Carbon::tomorrow();
-	echo $tomorrow; // 2024-06-28 00:00:00
-
-	Checking if date is in the past or future
-	if ($now->isPast()) {
-		echo 'The date is in the past';
-	}
-
-	if ($now->isFuture()) {
-		echo 'The date is in the future';
-	}
-
-	Checking day of the week
-	if ($now->isMonday()) {
-		echo 'Today is Monday';
-	}
-
-	Age calculation
-	$birthDate = Carbon::createFromDate(2000, 6, 27);
-	echo $birthDate->age; // 24
-</pre>
-
-<h4>Blade - Directives</h4>
-<pre>
-	@dump($perPage, $newGenre, $genres->toArray())  
-	@dd($perPage, $newGenre, $genres->toArray())
-
-	If Statement
-	@if($user->isAdmin)
+    <!-- Progress Bar -->
+    <div class="progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Navigation Toggle -->
+    <button class="nav-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search Laravel commands..." onkeyup="searchContent(this.value)">
+        </div>
+        <ul>
+            <li><a href="#routes" onclick="closeSidebar()"><i class="fas fa-route"></i> Routes</a></li>
+            <li><a href="#controllers" onclick="closeSidebar()"><i class="fas fa-cogs"></i> Controllers</a></li>
+            <li><a href="#models" onclick="closeSidebar()"><i class="fas fa-database"></i> Models</a></li>
+            <li><a href="#migrations" onclick="closeSidebar()"><i class="fas fa-table"></i> Migrations</a></li>
+            <li><a href="#crud" onclick="closeSidebar()"><i class="fas fa-edit"></i> CRUD Operations</a></li>
+            <li><a href="#seeder" onclick="closeSidebar()"><i class="fas fa-seedling"></i> Seeders</a></li>
+            <li><a href="#request" onclick="closeSidebar()"><i class="fas fa-paper-plane"></i> Requests</a></li>
+            <li><a href="#middleware" onclick="closeSidebar()"><i class="fas fa-shield-alt"></i> Middleware</a></li>
+            <li><a href="#policy" onclick="closeSidebar()"><i class="fas fa-lock"></i> Policies</a></li>
+            <li><a href="#command" onclick="closeSidebar()"><i class="fas fa-terminal"></i> Commands</a></li>
+            <li><a href="#event" onclick="closeSidebar()"><i class="fas fa-bell"></i> Events</a></li>
+            <li><a href="#job" onclick="closeSidebar()"><i class="fas fa-tasks"></i> Jobs</a></li>
+            <li><a href="#listener" onclick="closeSidebar()"><i class="fas fa-headphones"></i> Listeners</a></li>
+            <li><a href="#mail" onclick="closeSidebar()"><i class="fas fa-envelope"></i> Mail</a></li>
+            <li><a href="#notification" onclick="closeSidebar()"><i class="fas fa-bell-o"></i> Notifications</a></li>
+            <li><a href="#provider" onclick="closeSidebar()"><i class="fas fa-plug"></i> Providers</a></li>
+            <li><a href="#test" onclick="closeSidebar()"><i class="fas fa-flask"></i> Tests</a></li>
+            <li><a href="#channel" onclick="closeSidebar()"><i class="fas fa-broadcast-tower"></i> Channels</a></li>
+            <li><a href="#exception" onclick="closeSidebar()"><i class="fas fa-exclamation-triangle"></i> Exceptions</a></li>
+            <li><a href="#factory" onclick="closeSidebar()"><i class="fas fa-industry"></i> Factories</a></li>
+            <li><a href="#observer" onclick="closeSidebar()"><i class="fas fa-eye"></i> Observers</a></li>
+            <li><a href="#rule" onclick="closeSidebar()"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="#resource" onclick="closeSidebar()"><i class="fas fa-archive"></i> Resources</a></li>
+            <li><a href="#application" onclick="closeSidebar()"><i class="fas fa-info"></i> Application</a></li>
+            <li><a href="#http-client" onclick="closeSidebar()"><i class="fas fa-globe"></i> HTTP Client</a></li>
+            <li><a href="#auth" onclick="closeSidebar()"><i class="fas fa-user-lock"></i> Authentication</a></li>
+            <li><a href="#carbon" onclick="closeSidebar()"><i class="fas fa-calendar"></i> Carbon</a></li>
+            <li><a href="#blade" onclick="closeSidebar()"><i class="fas fa-cut"></i> Blade Directives</a></li>
+            <li><a href="#laravel11" onclick="closeSidebar()"><i class="fas fa-rocket"></i> Laravel 11</a></li>
+            <li><a href="#auth-setup" onclick="closeSidebar()"><i class="fas fa-user-plus"></i> Auth Setup</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fab fa-laravel"></i> Laravel Useful Commands</h1>
+            <p>Complete Reference Guide for Laravel Artisan Commands</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            
+            <!-- Introduction -->
+            <section class="section" id="introduction">
+                <h2><i class="fas fa-info-circle"></i> Laravel Command Reference</h2>
+                <div class="alert info">
+                    <strong>Welcome!</strong> This comprehensive guide contains all essential Laravel Artisan commands organized by category. Use the sidebar to navigate quickly or search for specific commands.
+                </div>
+            </section>
+
+            <!-- Routes -->
+            <section class="section" id="routes">
+                <h2><i class="fas fa-route"></i> Routes</h2>
+                
+                <h3>Route List</h3>
+                <pre><code class="language-bash"># List all routes
+php artisan route:list
+
+# Hide routes defined by third-party packages
+php artisan route:list --except-vendor</code></pre>
+
+                <h3>Router HTTP Methods</h3>
+                <pre><code class="language-php"># Basic HTTP methods
+Route::get($uri, $callback);
+Route::post($uri, $callback);
+Route::put($uri, $callback);
+Route::patch($uri, $callback);
+Route::delete($uri, $callback);
+Route::options($uri, $callback);
+
+# Multiple HTTP methods
+Route::methods(['GET', 'POST'], $uri, $callback);
+
+# All HTTP methods
+Route::match(['GET', 'POST'], $uri, $callback);
+Route::any($uri, $callback);
+Route::allMethods($uri, $callback);</code></pre>
+
+                <h3>Route Optional Parameters</h3>
+                <pre><code class="language-php">Route::get('/user/{name?}', function ($name = null) {
+    return $name;
+});
+
+Route::get('/user/{name?}', function ($name = 'John') {
+    return $name;
+});</code></pre>
+
+                <h3>Regular Expression Constraints</h3>
+                <pre><code class="language-php">Route::get('/user/{name}', function ($name) {
+    //
+})->where('name', '[A-Za-z]+');
+
+Route::get('/user/{id}', function ($id) {
+    //
+})->where('id', '[0-9]+');
+
+Route::get('/user/{id}/{name}', function ($id, $name) {
+    //
+})->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
+
+Route::get('/user/{id}/{name}', function ($id, $name) {
+    //
+})->whereInteger('id');
+
+Route::get('/user/{id}/{name}', function ($id, $name) {
+    //
+})->whereAlpha('name');</code></pre>
+
+                <h3>Accessing Current Route</h3>
+                <pre><code class="language-php">$route = Route::current();
+$route = Route::currentRouteName();
+$route = Route::currentRouteAction();</code></pre>
+
+                <h3>Redirect Routes</h3>
+                <pre><code class="language-php"># Basic redirects
+Route::redirect('/here', '/there');
+Route::redirect('/here', '/there', 301);
+Route::redirect('/here', '/there', 301, ['id' => 123]);
+Route::permanentRedirect('/here', '/there');
+
+# Route list with redirect filters
+php artisan route:list --redirect
+php artisan route:list --redirect --except-vendor
+php artisan route:list --redirect --only-vendor
+php artisan route:list --redirect --only=home
+php artisan route:list --redirect --except=home</code></pre>
+            </section>
+            <!-- Controllers -->
+            <section class="section" id="controllers">
+                <h2><i class="fas fa-cogs"></i> Controllers</h2>
+                
+                <div class="alert info">
+                    <strong>Controllers</strong> handle the application logic and coordinate between models and views.
+                </div>
+
+                <pre><code class="language-bash"># Basic controller
+php artisan make:controller UserController
+
+# Controller with model binding
+php artisan make:controller UserController --model=User
+
+# Resource controller
+php artisan make:controller UserController --resource
+
+# API controller  
+php artisan make:controller UserController --api
+
+# Invokable controller
+php artisan make:controller UserController --invokable
+
+# Combined options
+php artisan make:controller UserController --model=User --resource
+php artisan make:controller UserController --model=User --api
+php artisan make:controller UserController --model=User --resource --api
+php artisan make:controller UserController --model=User --api --invokable
+php artisan make:controller UserController --model=Photo --force</code></pre>
+            </section> 
+
+            <!-- Models -->
+            <section class="section" id="models">
+                <h2><i class="fas fa-database"></i> Models</h2>
+                
+                <div class="alert success">
+                    <strong>Models</strong> represent database tables and handle data operations using Eloquent ORM.
+                </div>
+
+                <h3>Creating Models</h3>
+                <pre><code class="language-bash"># Basic model
+php artisan make:model Photo
+
+# Model with migration, controller, and resource
+php artisan make:model Photo --migration --controller --resource
+php artisan make:model Photo -crm
+
+# Model with additional options
+php artisan make:model Photo --force
+php artisan make:model Photo --table=photos
+php artisan make:model Photo --table=photos --connection=mysql
+php artisan make:model Photo --table=photos --connection=mysql --migration --controller --resource --force</code></pre>
+
+                <h3>Model Mass Assignment</h3>
+                <pre><code class="language-php"># Fillable attributes (whitelist)
+protected $fillable = ['name', 'email'];
+
+# Guarded attributes (blacklist)
+protected $guarded = []; // Empty means all attributes are guarded
+
+# Hidden attributes (not included in JSON)
+protected $hidden = ['password', 'remember_token'];
+
+# Cast attributes to specific types
+protected $casts = [
+    'email_verified_at' => 'datetime',
+];
+
+# Date attributes
+protected $dates = ['deleted_at'];
+
+# Eager loading relationships
+protected $with = ['posts'];
+
+# Count relationships
+protected $withCount = ['posts'];
+
+# Append accessors to JSON
+protected $appends = ['full_name'];</code></pre>
+            </section>
+
+            <!-- Migrations -->
+            <section class="section" id="migrations">
+                <h2><i class="fas fa-table"></i> Migrations</h2>
+                
+                <div class="alert warning">
+                    <strong>Migrations</strong> are version control for your database, allowing you to modify and share database schemas.
+                </div>
+
+                <h3>Migration Commands</h3>
+                <pre><code class="language-bash"># Run new migrations
+php artisan migrate
+
+# Rollback latest migration
+php artisan migrate:rollback
+
+# Rollback all migrations
+php artisan migrate:reset
+
+# Rollback all and re-migrate
+php artisan migrate:refresh
+
+# Rollback all, re-migrate and run seeders
+php artisan migrate:refresh --seed
+
+# Create a migration
+php artisan make:migration create_users_table
+
+# Create migration with specified table
+php artisan make:migration create_users_table --table=users
+
+# Create migration with specified columns
+php artisan make:migration create_users_table --table=users --columns="name:string(255),email:string(255),password:string(255)"</code></pre>
+            </section> 
+
+            <!-- CRUD Operations -->
+            <section class="section" id="crud">
+                <h2><i class="fas fa-edit"></i> CRUD Operations</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-plus"></i> Create</h4>
+                        <pre><code class="language-php">$newUser = User::create([
+    'name' => 'John Doe', 
+    'email' => 'john@example.com'
+]);</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-book"></i> Read</h4>
+                        <pre><code class="language-php">$users = User::all();
+$user = User::find(1);
+$activeUsers = User::where('status', 'active')->get();
+$tags = Product::where('name', 'Some Product')->first()->tags;</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-edit"></i> Update</h4>
+                        <pre><code class="language-php">$user = User::find(1);
+$user->update(['name' => 'Updated Name']);
+User::where('status', 'inactive')->update(['status' => 'active']);</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-trash"></i> Delete</h4>
+                        <pre><code class="language-php">$user = User::find(1);
+$user->delete();
+User::where('status', 'inactive')->delete();</code></pre>
+                    </div>
+                </div>
+            </section>
+            <!-- Seeders -->
+            <section class="section" id="seeder">
+                <h2><i class="fas fa-seedling"></i> Seeders</h2>
+                
+                <div class="alert success">
+                    <strong>Seeders</strong> allow you to populate your database with test data for development and testing.
+                </div>
+
+                <pre><code class="language-bash"># Create seeder
+php artisan make:seeder BooksTableSeeder
+php artisan make:seeder BooksTableSeeder --class=BooksTableSeeder
+php artisan make:seeder BooksTableSeeder --force
+php artisan make:seeder BooksTableSeeder --database=mysql
+
+# Run seeders
+php artisan db:seed
+php artisan db:seed --class=BooksTableSeeder
+php artisan db:seed --class=BooksTableSeeder --force
+php artisan db:seed --database=mysql</code></pre>
+            </section>
+
+            <!-- Requests -->
+            <section class="section" id="request">
+                <h2><i class="fas fa-paper-plane"></i> Form Requests</h2>
+                <pre><code class="language-bash">php artisan make:request StoreBlogPost</code></pre>
+            </section>
+
+            <!-- Middleware -->
+            <section class="section" id="middleware">
+                <h2><i class="fas fa-shield-alt"></i> Middleware</h2>
+                <pre><code class="language-bash">php artisan make:middleware IsAdmin</code></pre>
+            </section>
+
+            <!-- Policies -->
+            <section class="section" id="policy">
+                <h2><i class="fas fa-lock"></i> Policies</h2>
+                <pre><code class="language-bash"># Basic policy
+php artisan make:policy PostPolicy
+
+# Policy with model
+php artisan make:policy PostPolicy --model=Photo</code></pre>
+            </section>
+
+            <!-- Commands -->
+            <section class="section" id="command">
+                <h2><i class="fas fa-terminal"></i> Artisan Commands</h2>
+                <pre><code class="language-bash"># Create custom command
+php artisan make:command SendEmails
+php artisan make:command SendEmails --command=Command</code></pre>
+            </section>
+
+            <!-- Events -->
+            <section class="section" id="event">
+                <h2><i class="fas fa-bell"></i> Events</h2>
+                <pre><code class="language-bash">php artisan make:event OrderShipped</code></pre>
+            </section>
+
+            <!-- Jobs -->
+            <section class="section" id="job">
+                <h2><i class="fas fa-tasks"></i> Jobs</h2>
+                <pre><code class="language-bash"># Create job
+php artisan make:job SendReminderEmail
+
+# Create synchronous job
+php artisan make:job SendReminderEmail --sync</code></pre>
+            </section>
+
+            <!-- Listeners -->
+            <section class="section" id="listener">
+                <h2><i class="fas fa-headphones"></i> Event Listeners</h2>
+                <pre><code class="language-bash"># Basic listener
+php artisan make:listener SendShipmentNotification
+
+# Listener for specific event
+php artisan make:listener SendShipmentNotification --event=Event
+
+# Queued listener
+php artisan make:listener SendShipmentNotification --queued</code></pre>
+            </section>
+
+            <!-- Mail -->
+            <section class="section" id="mail">
+                <h2><i class="fas fa-envelope"></i> Mail</h2>
+                <pre><code class="language-bash"># Basic mail
+php artisan make:mail OrderShipped
+
+# Mail with markdown template
+php artisan make:mail OrderShipped --markdown
+
+# Force create mail
+php artisan make:mail OrderShipped --force</code></pre>
+            </section>
+
+            <!-- Notifications -->
+            <section class="section" id="notification">
+                <h2><i class="fas fa-bell-o"></i> Notifications</h2>
+                <pre><code class="language-bash"># Basic notification
+php artisan make:notification InvoicePaid
+
+# Notification with markdown
+php artisan make:notification InvoicePaid --markdown
+
+# Force create notification
+php artisan make:notification InvoicePaid --force</code></pre>
+            </section>            <!-- Providers -->
+            <section class="section" id="provider">
+                <h2><i class="fas fa-plug"></i> Service Providers</h2>
+                <pre><code class="language-bash">php artisan make:provider DuskServiceProvider</code></pre>
+            </section>
+
+            <!-- Tests -->
+            <section class="section" id="test">
+                <h2><i class="fas fa-flask"></i> Tests</h2>
+                <pre><code class="language-bash"># Feature test
+php artisan make:test UserTest
+
+# Unit test
+php artisan make:test UserTest --unit</code></pre>
+            </section>
+
+            <!-- Channels -->
+            <section class="section" id="channel">
+                <h2><i class="fas fa-broadcast-tower"></i> Broadcasting Channels</h2>
+                <pre><code class="language-bash">php artisan make:channel OrderChannel</code></pre>
+            </section>
+
+            <!-- Exceptions -->
+            <section class="section" id="exception">
+                <h2><i class="fas fa-exclamation-triangle"></i> Custom Exceptions</h2>
+                <pre><code class="language-bash"># Basic exception
+php artisan make:exception UserNotFoundException
+
+# Exception with render method
+php artisan make:exception UserNotFoundException --render
+
+# Exception with report method
+php artisan make:exception UserNotFoundException --report</code></pre>
+            </section>
+
+            <!-- Factories -->
+            <section class="section" id="factory">
+                <h2><i class="fas fa-industry"></i> Model Factories</h2>
+                <pre><code class="language-bash"># Basic factory
+php artisan make:factory PostFactory
+
+# Factory for specific model
+php artisan make:factory PostFactory --model=Post</code></pre>
+            </section>
+
+            <!-- Observers -->
+            <section class="section" id="observer">
+                <h2><i class="fas fa-eye"></i> Model Observers</h2>
+                <pre><code class="language-bash"># Basic observer
+php artisan make:observer PostObserver
+
+# Observer for specific model
+php artisan make:observer PostObserver --model=Post</code></pre>
+            </section>
+
+            <!-- Rules -->
+            <section class="section" id="rule">
+                <h2><i class="fas fa-gavel"></i> Validation Rules</h2>
+                <pre><code class="language-bash">php artisan make:rule Uppercase</code></pre>
+            </section>
+
+            <!-- Resources -->
+            <section class="section" id="resource">
+                <h2><i class="fas fa-archive"></i> API Resources</h2>
+                <pre><code class="language-bash"># Basic resource
+php artisan make:resource PostResource
+
+# Resource collection
+php artisan make:resource PostResource --collection=Post</code></pre>
+            </section>
+
+            <!-- Application Overview -->
+            <section class="section" id="application">
+                <h2><i class="fas fa-info"></i> Application Management</h2>
+                
+                <h3>Application Overview</h3>
+                <pre><code class="language-bash"># Show application information
+php artisan about
+php artisan about --only=environment</code></pre>
+
+                <h3>Maintenance Mode</h3>
+                <pre><code class="language-bash"># Enable maintenance mode
+php artisan down
+php artisan down --retry=60
+php artisan down --render="maintenance"
+php artisan down --redirect=/
+php artisan down --secret="myapp"
+
+# Disable maintenance mode
+php artisan up</code></pre>
+            </section>
+
+            <!-- HTTP Client -->
+            <section class="section" id="http-client">
+                <h2><i class="fas fa-globe"></i> HTTP Client</h2>
+                
+                <div class="alert info">
+                    <strong>Laravel HTTP Client</strong> provides a fluent, expressive API for making HTTP requests.
+                </div>
+
+                <h3>Basic HTTP Requests</h3>
+                <pre><code class="language-php"># Basic GET request
+$response = Http::get('https://api.quotable.io/random');
+
+# GET with parameters
+$response = Http::get('https://api.quotable.io/random', ['param' => 'value']);</code></pre>
+
+                <h3>Response Methods</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-code"></i> Data Formats</h4>
+                        <pre><code class="language-php">$result = $response->json();
+$result = $response->object();
+$result = $response->collect();
+$result = $response->array();
+$result = $response->body();
+$result = $response->text();</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-info-circle"></i> Response Info</h4>
+                        <pre><code class="language-php">$result = $response->status();
+$result = $response->successful();
+$result = $response->headers();
+$result = $response->cookies();</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Authentication -->
+            <section class="section" id="auth">
+                <h2><i class="fas fa-user-lock"></i> Authentication</h2>
+                
+                <div class="alert success">
+                    <strong>Authentication</strong> provides user login, registration, and session management out of the box.
+                </div>
+
+                <h3>Authentication Methods</h3>
+                <pre><code class="language-php"># Get authenticated user
+$user = auth()->user();
+$user = Auth::user();
+$id = Auth::id();
+
+# Check authentication status
+$isAuthenticated = Auth::check();
+$isGuest = Auth::guest();
+
+# Get user properties
+$name = auth()->user()->name;
+$email = Auth::user()->email;</code></pre>
+
+                <h3>Blade Authentication Directives</h3>
+                <pre><code class="language-blade">{{-- Only visible for guests (not logged in) --}}
+@guest
+    <a href="/login">Login</a>
+@endguest
+
+{{-- Only visible for authenticated users (logged in) --}}
+@auth
+    <p>Welcome, {{ auth()->user()->name }}!</p>
+@endauth</code></pre>
+            </section>
+
+            <!-- Carbon Date Library -->
+            <section class="section" id="carbon">
+                <h2><i class="fas fa-calendar"></i> Carbon Date Library</h2>
+                
+                <div class="alert info">
+                    <strong>Carbon</strong> is a simple API extension for DateTime that makes working with dates and times much easier.
+                </div>
+
+                <h3>Import Carbon</h3>
+                <pre><code class="language-php">use Carbon\Carbon;</code></pre>
+
+                <h3>Creating Dates</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-clock"></i> Current Date/Time</h4>
+                        <pre><code class="language-php"># Current time
+$now = Carbon::now();
+
+# Current time with timezone
+$now = Carbon::now('Asia/Kolkata');
+$now = Carbon::now('America/New_York');
+
+# Specific dates
+$today = Carbon::today();
+$yesterday = Carbon::yesterday();
+$tomorrow = Carbon::tomorrow();</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-calendar-plus"></i> Custom Dates</h4>
+                        <pre><code class="language-php"># Create specific date
+$newYear = Carbon::create(2024, 1, 1, 0, 0, 0);
+
+# Parse date string
+$date = Carbon::parse('2024-06-27 12:00:00');
+
+# From timestamp
+$timestamp = Carbon::createFromTimestamp(1622499200);</code></pre>
+                    </div>
+                </div>
+
+                <h3>Date Manipulation</h3>
+                <pre><code class="language-php"># Add time
+echo $now->addDays(5);    // 5 days from now
+echo $now->addWeeks(2);   // 2 weeks from now
+echo $now->addMonths(3);  // 3 months from now
+
+# Subtract time
+echo $now->subDays(5);    // 5 days ago
+echo $now->subWeeks(2);   // 2 weeks ago
+echo $now->subMonths(3);  // 3 months ago
+
+# Start and end of periods
+echo $now->startOfDay();   // Start of today
+echo $now->endOfDay();     // End of today
+echo $now->startOfMonth(); // Start of the month
+echo $now->endOfMonth();   // End of the month</code></pre>
+
+                <h3>Date Formatting</h3>
+                <pre><code class="language-php"># Standard formats
+echo $now->format('Y-m-d H:i:s');      // 2024-06-27 12:00:00
+echo $now->toDateString();             // 2024-06-27
+echo $now->toFormattedDateString();    // Jun 27, 2024
+echo $now->toTimeString();             // 12:00:00
+echo $now->toDateTimeString();         // 2024-06-27 12:00:00
+
+# Custom format
+echo $now->format('l jS \of F Y h:i:s A'); // Wednesday 27th of June 2024 12:00:00 PM</code></pre>
+
+                <h3>Date Comparison & Human Readable</h3>
+                <pre><code class="language-php"># Comparisons
+if ($now->lt($tomorrow)) {
+    echo 'Now is before tomorrow';
+}
+
+if ($now->isSameDay($anotherDate)) {
+    echo 'Same day';
+}
+
+# Human readable
+echo $now->diffForHumans();              // 1 second ago
+echo $now->addDays(5)->diffForHumans();  // 5 days from now
+
+# Age calculation
+$birthDate = Carbon::createFromDate(2000, 6, 27);
+echo $birthDate->age; // 24</code></pre>
+            </section>
+
+            <!-- Blade Directives -->
+            <section class="section" id="blade">
+                <h2><i class="fas fa-cut"></i> Blade Directives</h2>
+                
+                <div class="alert warning">
+                    <strong>Blade</strong> is Laravel's powerful templating engine with intuitive syntax for displaying data and controlling flow.
+                </div>
+
+                <h3>Debugging Directives</h3>
+                <pre><code class="language-blade">{{-- Debug helpers --}}
+@dump($perPage, $newGenre, $genres->toArray())  
+@dd($perPage, $newGenre, $genres->toArray())</code></pre>
+
+                <h3>Conditional Directives</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-question-circle"></i> If Statements</h4>
+                        <pre><code class="language-blade">@if($user->isAdmin)
+    <p>Admin User</p>
+@else
+    <p>Regular User</p>
+@endif
+
+@isset($products)
+    <p>Products exist</p>
+@endisset
+
+@empty($records)
+    <p>No records found</p>
+@endempty</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-code-branch"></i> Switch Statements</h4>
+                        <pre><code class="language-blade">@switch($role)
+    @case('admin')
+        <p>Administrator</p>
+        @break
+    @case('user')
+        <p>Regular User</p>
+        @break
+    @default
+        <p>Unknown Role</p>
+@endswitch</code></pre>
+                    </div>
+                </div>
+
+                <h3>Loop Directives</h3>
+                <pre><code class="language-blade">{{-- For loop --}}
+@for ($i = 0; $i < 10; $i++)
+    <p>{{ $i }}</p>
+@endfor
+
+{{-- Foreach loop --}}
+@foreach($products as $product)
+    <p>{{ $product->name }}</p>
+@endforeach
+
+{{-- Forelse loop (with empty state) --}}
+@forelse($products as $product)
+    <p>{{ $product->name }}</p>
+@empty
+    <p>No products found</p>
+@endforelse
+
+{{-- While loop --}}
+@while (true)
+    {{-- Loop content --}}
+@endwhile</code></pre>
+
+                <h3>Authentication & Raw PHP</h3>
+                <pre><code class="language-blade">{{-- Authentication checks --}}
+@auth
+    <p>User is authenticated</p>
+@endauth
+
+@guest
+    <p>User is not authenticated</p>
+@endguest
+
+{{-- Raw PHP code --}}
+@php
+    $counter = 1;
+@endphp
+
+{{-- Display JSON data --}}
+<pre>@json($products, JSON_PRETTY_PRINT)</pre></code></pre>
+            </section>
+
+            <!-- Laravel 11 Features -->
+            <section class="section" id="laravel11">
+                <h2><i class="fas fa-rocket"></i> Laravel 11 New Features</h2>
+                
+                <div class="alert success">
+                    <strong>Laravel 11</strong> introduces new publishing commands and simplified project structure.
+                </div>
+
+                <h3>Publishing Commands</h3>
+                <pre><code class="language-bash"># Publish language files
+php artisan lang:publish
+php artisan lang:publish --existing
+
+# Publish config files
+php artisan config:publish
+php artisan config:publish --all
+
+# Install route files
+php artisan install:api
+php artisan install:broadcasting</code></pre>
+            </section>
+
+            <!-- Authentication Setup -->
+            <section class="section" id="auth-setup">
+                <h2><i class="fas fa-user-plus"></i> Authentication Setup</h2>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-history"></i> Legacy Authentication (Before Laravel 6)</h4>
+                        <pre><code class="language-bash"># Create Laravel project
+composer create-project laravel/laravel my-app
+
+# Generate auth scaffolding
+php artisan make:auth</code></pre>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4><i class="fas fa-star"></i> Modern Authentication (Laravel 6+)</h4>
+                        <pre><code class="language-bash"># Create Laravel project
+composer create-project laravel/laravel my-app
+
+# Install Laravel UI
+composer require laravel/ui
+composer require laravel/ui --dev
+
+# Generate UI scaffolding
+php artisan ui vue
+php artisan ui react
+php artisan ui bootstrap
+
+# Generate UI with auth
+php artisan ui vue --auth
+php artisan ui react --auth
+php artisan ui bootstrap --auth
+
+# Install and compile assets
+npm install
+npm run dev        # Development
+npm run watch      # Watch for changes
+npm run build      # Production (Vite)</code></pre>
+                    </div>
+                </div>
+
+                <div class="alert info">
+                    <strong>Note:</strong> Modern Laravel applications use Laravel Breeze, Jetstream, or Fortify for authentication instead of the legacy UI package.
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
     
-	@else
+    <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('shifted');
+        }
 
-	@endif
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.remove('active');
+            mainContent.classList.remove('shifted');
+        }
 
-	Switch Statement
-	@switch($role)
-	@case('admin')
-		@break
-	@case('user')
-		@break
-	@default
-	@endswitch
+        // Progress Bar
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
 
-	Check if defined and not null
-	@isset($products)
-	@endisse
+        // Back to Top
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
 
-	Check if empty
-	@empty($records)
-	@endempty
+        function toggleBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
 
-	For loop
-	@for ($i = 0; $i < 10; $i++)
-    	{{ $i }}
-	@endfor
+        // Active Navigation
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.sidebar a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-	Foreach loop
-	@foreach($products as $product)
-		{{ $product->name }}
-	@endforeach
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
 
-	Forelse loop
-	@forelse($products as $product)
-		{{ $product->name }}
-	@empty
-		No products found
-	@endforelse
+        // Search Functionality
+        function searchContent(query) {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.sidebar a');
+            
+            if (!query) {
+                // Show all sections and nav links
+                sections.forEach(section => section.style.display = 'block');
+                navLinks.forEach(link => link.style.display = 'block');
+                return;
+            }
 
-	While loop
-	@while (true)
-	@endwhile
+            const searchTerm = query.toLowerCase();
+            
+            sections.forEach(section => {
+                const content = section.textContent.toLowerCase();
+                if (content.includes(searchTerm)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
 
-	Determine if a user is authenticated or not.
-	@auth
-	@endauth
+            navLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    link.style.display = 'block';
+                } else {
+                    link.style.display = 'none';
+                }
+            });
+        }
 
-	@guest
-	@endguest
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('.sidebar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-	Add raw php code
-	@php
-		$counter = 1;
-	@endphp
+        // Event Listeners
+        window.addEventListener('scroll', () => {
+            updateProgressBar();
+            toggleBackToTop();
+            updateActiveNav();
+        });
 
-	Show JSON data
-	<pre>@json($products, JSON_PRETTY_PRINT)</pre>
-</pre>
+        // Click outside sidebar to close
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const navToggle = document.querySelector('.nav-toggle');
+            
+            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
+                closeSidebar();
+            }
+        });
 
-<h4>Publish the lang Folder in Laravel 11</h4>
-<pre> 
-	php artisan lang:publish
-	php artisan lang:publish --existing
-</pre>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+            updateActiveNav();
+        });
 
-<h4>Publish Config Files in Laravel 11</h4>
-<pre> 
-	php artisan config:publish
-	php artisan config:publish --all
-</pre>
-
-<h4>Publish the various route files in Laravel 11</h4>
-<pre> 
-	php artisan install:api
-	php artisan install:broadcasting
-</pre>
-
-<h1>Laravel Old Authentication (Artisan Command)</h1>
-<p>composer create-project laravel/laravel my-app</p>
-<p>php artisan make:auth</p>
-<br>
-
-<h1>Laravel New Authentication (Artisan Command)</h1>
-<p>composer create-project laravel/laravel my-app</p>
-<p>composer require laravel/ui</p> 
-<p>composer require laravel/ui --dev</p>
-
-<p> > php artisan ui --help </p>
-<p>php artisan ui vue</p>
-<p>php artisan ui react</p>
-<p>php artisan ui bootstrap</p>
-
-<p> > auth </p>
-<p>php artisan ui vue --auth </p>
-<p>php artisan ui react --auth</p>
-<p>php artisan ui bootstrap --auth</p>
-
-<p> > node</p>
-<p>npm install</p>
-<p>npm run dev</p>
-<p>Compiling Assets (Mix)</p>
-<p>npm run watch</p><br>
-<p>Asset Bundling (Vite)</p>
-<p>npm run build</p>
+        // Copy code functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add copy buttons to code blocks
+            const codeBlocks = document.querySelectorAll('pre code');
+            codeBlocks.forEach((block, index) => {
+                const button = document.createElement('button');
+                button.className = 'copy-btn';
+                button.innerHTML = '<i class="fas fa-copy"></i>';
+                button.title = 'Copy code';
+                button.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: #ff6b6b;
+                    color: white;
+                    border: none;
+                    padding: 5px 8px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 12px;
+                    opacity: 0.8;
+                    transition: opacity 0.2s;
+                `;
+                
+                button.addEventListener('click', () => {
+                    navigator.clipboard.writeText(block.textContent).then(() => {
+                        button.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                    });
+                });
+                
+                block.parentNode.style.position = 'relative';
+                block.parentNode.appendChild(button);
+                
+                button.addEventListener('mouseenter', () => button.style.opacity = '1');
+                button.addEventListener('mouseleave', () => button.style.opacity = '0.8');
+            });
+        });
+    </script>
 </body>
 </html>
